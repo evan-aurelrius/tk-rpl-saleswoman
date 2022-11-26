@@ -1,0 +1,1 @@
+web: gunicorn logistx.wsgi --log-file
