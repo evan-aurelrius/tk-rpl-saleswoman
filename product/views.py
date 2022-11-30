@@ -1,5 +1,17 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render,redirect
+from .models import Product
+from .forms import ProductForm
 
 def index(request):
-    return HttpResponse("<h1>Product page is not implemented yet!</h1>")
+    form = ProductForm
+    if request.method == 'POST':
+        friendForm = ProductForm(request.POST)
+        if friendForm.is_valid():
+            friendForm.save()
+            return redirect('product')
+    products = Product.objects.all
+    return render(request, 'product.html', {'form':form,'products':products})
+
+def getProductDetails(id):
+    product = Product.objects.get(pk=id)
+    return product
