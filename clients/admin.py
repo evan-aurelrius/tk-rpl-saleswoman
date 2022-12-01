@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Client, MockSales
 
-# Register your models here.
+admin.site.register(Client)
+admin.site.register(MockSales)
