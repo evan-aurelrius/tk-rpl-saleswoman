@@ -8,7 +8,7 @@ def index(request):
         friendForm = ProductForm(request.POST)
         if friendForm.is_valid():
             friendForm.save()
-            return redirect('product')
+            return redirect('/product')
     products = Product.objects.all
     return render(request, 'product.html', {'form':form,'products':products})
 
