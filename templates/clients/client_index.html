@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clients</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+</head>
+<body>
+<div class="p-3">
+    <div>
+        {% if create_code == 1 %}
+            <div class="alert alert-success" role="alert">
+                Client created successfully
+            </div>
+        {% elif create_code == 0 %}
+            <div class="alert alert-danger" role="alert">
+                Error occurred while creating client
+            </div>
+        {% endif %}
+        This is Clients Index UI
+    </div>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+        Add Client
+    </button>
+
+    <div class="m-3">
+        <p>This is temporary until login is implemented</p>
+        {% for s in sales %}
+            <div class="m-2">
+                <p>Sales: {{ s.username }}</p>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Client Name</th>
+                        <th>Client Information</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for client in s.clients.all %}
+                        <tr>
+                            <td>{{ client.name }}</td>
+                            <td>
+                                <button class="btn btn-primary detail-button">Details</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<!-- Modal Create Client -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="createModalLabel">Add New Client</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="create-client/" id="client-form">
+                    {% csrf_token %}
+                    <table>
+                        {{ form.as_table }}
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <input type="submit" class="btn btn-primary" form="client-form">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Client Details -->
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="detailModalLabel">Add New Client</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="detail-content">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script href="{% static 'js/bootstrap.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+<script>
+    const detailButtons = document.getElementsByClassName("detail-button");
+    for (let i = 0; i < detailButtons.length; i++) {
+        detailButtons[i].addEventListener("click", function () {
+            const clientName = this.parentElement.parentElement.children[0].innerHTML;
+            const salesUsername = this.parentElement.parentElement.parentElement.parentElement.parentElement
+                .children[0].innerHTML.split(":")[1].trim();
+
+            const request = new XMLHttpRequest();
+            request.open("GET", `details/?client_name=${clientName}&sales_username=${salesUsername}`, true);
+            request.onload = function () {
+                const data = JSON.parse(this.response);
+
+                let content = '';
+                let title = '';
+                if (request.status === 200) {
+                    title = clientName;
+                    content = data['information'];
+                } else {
+                    title = 'Error!';
+                    content = data['error'];
+                }
+
+                document.getElementById("detailModalLabel").innerHTML = title;
+                document.getElementById("detail-content").innerText = content;
+                const detailModal = new bootstrap.Modal(document.getElementById('detailModal'));
+                detailModal.show();
+            }
+            request.send();
+        });
+    }
+</script>
+</html>
