@@ -7,6 +7,9 @@ class MockSales(models.Model):
     def __str__(self):
         return self.username
 
+    def create_client(self, name, information):
+        return Client.objects.create(name=name, information=information, sales=self)
+
 
 class Client(models.Model):
     name = models.CharField(max_length=50, unique=True)

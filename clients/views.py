@@ -3,6 +3,7 @@ import json
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.db import IntegrityError
 
 from clients.forms import ClientForm
 from clients.models import MockSales, Client
@@ -12,11 +13,17 @@ def create_client(request):
     if request.method == 'POST':
         form = ClientForm(request.POST)
         if form.is_valid():
-            form.save()
-            request.session['create_code'] = 1  # 1 = success
+            sales = form.cleaned_data['sales']
+
+            try:
+                sales.create_client(form.cleaned_data['name'], form.cleaned_data['information'])
+                request.session['create_code'] = 1
+            except IntegrityError:
+                request.session['create_code'] = 0
+
             return redirect('client_index')
         else:
-            request.session['create_code'] = 0  # 0 = error
+            request.session['create_code'] = 0
             return redirect('client_index')
 
     return redirect('client_index')
