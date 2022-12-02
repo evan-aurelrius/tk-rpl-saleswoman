@@ -12,6 +12,7 @@ def register_admin_account(request) :
             admin = createAdminAccount(request)
 
             return redirect("account:login")
+        return render(request, "register.html")
     
     return redirect("account:homepage")
 

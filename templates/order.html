@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}
+<title>Order</title>
+{% endblock %}
+{% block content %}
+    <form id="form">
+        {% csrf_token %}
+        <tr>
+            <td>
+                <select>
+                    {% for c in client_list%}
+                    <option> {{c.name}} </option>
+                    <!-- <script language="javascript" type="text/javascript"> 
+                    
+                    for(const item in '{{client_list}}'){
+                        console.log(item.name)
+                        document.write("<option>"+d+"</option>");
+                    }
+                    </script> -->
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <table id="product-table">
+
+        </table>
+        
+
+        <button type='submit' onclick="submitForm()"> SUBMIT </button>
+    </form>
+    {% for message in messages %}
+    {% if message.tags %}
+        <script>alert("{{ message }}")</script>
+    {% endif %}
+    {% endfor %}        
+    <script>
+        window.onload = showProduct()
+        async function getProduct(){
+            var data = await fetch("{% url 'order:json' %}").then((res) => res.json());
+            return data
+        }
+        async function showProduct(){
+            product = await getProduct()
+            document.getElementById("product-table").innerHTML = ""
+            html = ""
+            product.forEach((item) =>{
+                html += `
+                    <tr>
+                        <td>
+                            <input type="checkbox" id="${item.pk}" name="${item.pk}" onclick="checkOnClick(this.id)"> 
+                                ${item.fields.name}
+                            </input>
+                            <input type="number" id="quantity-${item.pk}" name="quantity-${item.pk}" style="display:none"><br>
+                        </td>
+                    </tr>
+                `
+            }) 
+            document.getElementById("product-table").innerHTML = html
+        }
+        async function submitForm(){
+            const form = document.forms.form
+            var formData = {}
+            var counter = 0;
+            for (var i = 1; i < form.elements.length - 1; i++){
+                var e = form.elements[i];
+                if(e.type == "select-one"){
+                    formData["client"] = e.value
+                }
+                if(e.type == "checkbox"){   
+                    if(e.checked == true){
+                        formData[e.name] = 0;
+                    }
+                }
+                if(e.type == "number"){
+                    if(formData[e.name[e.name.length - 1]] != null){
+                        formData[e.name[e.name.length - 1]] = e.value
+                    }
+                }
+            }
+            await fetch("{% url 'order:create-order' %}", {
+                method: "POST",
+                body:  JSON.stringify(formData),
+                credentials: 'same-origin',
+                headers: { "X-CSRFToken": getCookie("csrftoken") },
+            }).then();
+        }
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function checkOnClick(id){
+            // Get the checkbox
+            var checkBox = document.getElementById(id);
+            // Get the output text
+            var input = document.getElementById(`quantity-${id}`);
+
+            // If the checkbox is checked, display the output input
+            if (checkBox.checked == true){
+                input.style.display = "block";
+            } else {
+                input.style.display = "none";
+            }
+        }
+    </script>
+{% endblock %}

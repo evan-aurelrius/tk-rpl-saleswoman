@@ -51,5 +51,5 @@ class LogisticOperator(BaseUser):
 
 class Sales(BaseUser):
     created_account = models.ForeignKey(AdminUser, on_delete=models.CASCADE)
-    client_list = models.JSONField(null=True)
-    order_list = models.JSONField(null=True)
+    client_list = models.JSONField(default=dict)
+    order_list = models.JSONField(default=dict)
