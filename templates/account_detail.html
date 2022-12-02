@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}
+<title>Product</title>
+{% endblock %}
+{% block content %}
+    <div class="container mt-xl-5">
+        <center>
+
+            <table class="table table-striped">
+                <tr>
+                    <th>Username:</th>
+                    <th>Email:</th>
+                    <th>Role:</th>
+                </tr>
+                
+                <tr>
+                    <td>{{ username }}</td>
+                    <td>{{ email }}</td>
+                    <td>{{ role }}</td>
+                </tr>
+            </table>
+            <button type="submit" >
+                <a href="{% url 'account:homepage' %}">Home</a>
+             </button>
+        </center>
+    </div>
+{% endblock %}

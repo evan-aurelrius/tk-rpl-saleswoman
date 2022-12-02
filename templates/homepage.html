@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Login</title>
+{% endblock %}
+
+{% block content %}
+ <h1>
+    Hello {{username}}, role kamu adalah {{role}}
+ </h1>
+ {% if role == "ADMIN" %}
+ <button type="submit" >
+    <a href="{% url 'account:create-account' %}">Create Account</a>
+ </button>
+ <button type="submit" >
+   <a href="{% url 'account:show-account-list' %}">Show Account List</a>
+</button>
+{% endif %}
+ <button type="submit" >
+   
+   <a href="{% url 'account:logout' %}"> Log Out</a>
+ </button>
+{% endblock %}
