@@ -24,7 +24,6 @@ def createOrder(request):
                 object_client = None
                 product = {}
                 order_price = 0
-                print(data)
                 for i in data :
                     try :
                         product_id = int(i)
@@ -103,7 +102,6 @@ def getOrder(request, id):
                 res = []
                 if(i == id) :
                     order = Order.objects.get(pk = int(i))
-                    print(order)
                     for j in order.product_list :
                         res.append(j)
                     temp = []

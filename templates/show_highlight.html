@@ -13,32 +13,18 @@
                     <th>Product variant:</th>
                     <th>Product price:</th>
                     <th>Product stock:</th>
-                    <th>Sorot Produk:</th>
                 </tr>
                 
-                {% for p in products %}
+                {% for p in highlight_list %}
                 <tr>
                     <td>{{ p.name }}</td>
                     <td>{{ p.brand }}</td>
                     <td>{{ p.variant }}</td>
                     <td>{{ p.price }}</td>
                     <td>{{ p.stock }}</td>
-                    <td><button data-product={{product.id}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button></td>
-                    
                 </tr>
                 {% endfor %}
             </table>
-
-            
-        
-            <form method="post" action="">
-                {% csrf_token %}
-                <table>
-                    {{form.as_table}}
-                </table>
-                <div class="text-left mt-3">
-            </form>
-                <button class = "btn btn-primary btn-block">Submit</button>
                 
 
         </center>

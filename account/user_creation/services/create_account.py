@@ -6,7 +6,6 @@ def createAdminAccount(request) :
     email = request.POST.get("email")
     password = request.POST.get("password")
     role = "ADMIN"
-    print(full_name)
 
     user = AdminUser.objects.create(
         full_name = full_name,
