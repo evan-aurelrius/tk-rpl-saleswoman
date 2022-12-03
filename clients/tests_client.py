@@ -1,30 +1,37 @@
 from django.test import TestCase
 
-from .models import MockSales, Client
-from .forms import ClientForm
+from clients.models import Client
+from account.models import Sales, AdminUser
 
 
 class ClientTestCase(TestCase):
     def setUp(self):
-        MockSales.objects.create(username='test_sales')
-        Client.objects.create(name='test_client1',
-                              information='test_information1',
-                              sales=MockSales.objects.get(username='test_sales')
-                              )
+        self.admin = AdminUser.objects.create(
+            full_name='admin1',
+            email='admin1@admin.com',
+            password='admin1',
+            role='ADMIN'
+        )
+
+        self.sales = Sales.objects.create(
+            full_name='sales1',
+            email='sales1@sales.com',
+            password='sales1',
+            role='SALES',
+            created_account=self.admin
+        )
+
+        self.client = Client.objects.create(
+            name='client1',
+            information='info1',
+            sales=self.sales
+        )
 
     def test_client(self):
-        client = Client.objects.get(name='test_client1')
-        self.assertEqual(client.name, 'test_client1')
-        self.assertEqual(client.information, 'test_information1')
-        self.assertEqual(client.sales.username, 'test_sales')
+        client = Client.objects.get(name=self.client.name)
+        self.assertEqual(client.name, self.client.name)
+        self.assertEqual(client.information, self.client.information)
+        self.assertEqual(client.sales, self.sales)
 
-    def test_form(self):
-        form = ClientForm({'name': 'test_client2',
-                           'information': 'test_information2',
-                           'sales': MockSales.objects.get(username='test_sales').id
-                           })
-        self.assertTrue(form.is_valid())
-        form.save()
-        self.assertEqual(Client.objects.count(), 2)
-        self.assertEqual(Client.objects.get(name='test_client2').information, 'test_information2')
-        self.assertEqual(Client.objects.get(name='test_client2').sales.username, 'test_sales')
+    def test_client_str(self):
+        self.assertEqual(str(self.client), self.client.name)
