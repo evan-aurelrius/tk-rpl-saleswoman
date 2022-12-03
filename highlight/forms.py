@@ -9,5 +9,5 @@ def get_choices_product() :
         res.append(pair)
     return res
 
-class HighlightForm(forms.Form):
-    product_list = forms.CharField(widget=forms.Select(choices=get_choices_product()))
+# class HighlightForm(forms.Form):
+    # product_list = forms.CharField(widget=forms.Select(choices=get_choices_product()))
