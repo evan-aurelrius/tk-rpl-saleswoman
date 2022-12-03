@@ -93,8 +93,6 @@ def getOrder(request, id):
         sales = Sales.objects.filter(pk=int(cookies)).first()
         if(sales != None) :
             order_list = sales.order_list
-            client = []
-            total_price = []
             data = {
 
             }
