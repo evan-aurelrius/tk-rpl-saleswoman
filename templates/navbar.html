@@ -1,0 +1,34 @@
+<nav class="navbar navbar-dark bg-primary navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">LogistX</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'product:catalog' %}">Catalog</a>
+          </li>
+          {% if role == "LOGISTIC OPERATOR" or role == "OPERATOR LOGISTIK" %}
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'product:create' %}">Add Product</a>
+          </li>
+          {% endif %}
+          {% if role == 'SALES' %}
+          <li class="nav-item">
+            <a class="nav-link active" href="/clients">My Clients</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'order:show-orders' %}">My Orders</a>
+          </li>
+          {% endif %}
+        </ul>
+        <span class="navbar-text">
+            <a type="button" class="btn btn-danger" href="{% url 'account:logout' %}">Logout</a>
+        </span>
+      </div>
+    </div>
+  </nav>
