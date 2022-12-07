@@ -30,26 +30,6 @@
                     </div>
                 {% endfor %}
             </div>
-
-            <!-- Create Feedback Alert -->
-            <div>
-                {% if create_code == 1 %}
-                    <div class="alert alert-success alert-dismissible" role="alert">
-                        <span>
-                            Client created successfully
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </span>
-                    </div>
-                {% elif create_code == 0 %}
-                    <div class="alert alert-danger alert-dismissible" role="alert">
-                        <span class="align-middle">
-                            Error occurred while creating client
-                            <button type="button" class="btn-close float-end" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                        </span>
-                    </div>
-                {% endif %}
-            </div>
         </div>
     </div>
 
@@ -63,12 +43,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="create-client/" id="client-form">
-                        {% csrf_token %}
-                        <table>
-                            {{ form.as_table }}
-                        </table>
-                    </form>
+                    <div class="p-2">
+                        <form method="post" action="create-client/" id="client-form">
+                            {% csrf_token %}
+                            {{ form }}
+                        </form>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -96,6 +76,25 @@
         </div>
     </div>
 
+    <!-- Create Feedback Alert -->
+    <div class="sticky-bottom mx-5">
+        {% if create_code == 1 %}
+            <div class="alert alert-success alert-dismissible" role="alert">
+                        <span>
+                            Client created successfully
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </span>
+            </div>
+        {% elif create_code == 0 %}
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                        <span class="align-middle">
+                            Error occurred while creating client
+                            <button type="button" class="btn-close float-end" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                        </span>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}
 
 {% block script %}
