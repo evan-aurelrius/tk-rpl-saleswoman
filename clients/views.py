@@ -54,6 +54,7 @@ def index(request):
         'form': form,
         'create_code': create_code,
         'sales': sales,
+        'role': sales.role,
     }
 
     return render(request, 'clients/client_index.html', context)
