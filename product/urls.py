@@ -5,5 +5,7 @@ from . import views
 app_name = 'product'
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('catalog/', views.catalog, name='catalog'),
+    path('create/', views.create, name='create'),
+    path('details/<int:id>', views.getDetailJson, name='details'),
 ]

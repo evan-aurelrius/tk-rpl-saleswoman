@@ -3,47 +3,34 @@
 <title>Product</title>
 {% endblock %}
 {% block content %}
-    <div class="container mt-xl-5">
-        <center>
-
-            <table class="table table-striped">
-                <tr>
-                    <th>Product name:</th>
-                    <th>Product brand:</th>
-                    <th>Product variant:</th>
-                    <th>Product price:</th>
-                    <th>Product stock:</th>
-                    <!-- <th>Status:</th> -->
-                </tr>
-                
-                {% for p in products %}
-                <tr>
-                    <td>{{ p.name }}</td>
-                    <td>{{ p.brand }}</td>
-                    <td>{{ p.variant }}</td>
-                    <td>{{ p.price }}</td>
-                    <td>{{ p.stock }}</td>
-                    <!-- {% for h in highlight_list  %}
-                        {% if p.name == h.name %}
-                            <td style="color:green; font-weight:bold">Highlighted</td>
-                        {% else %}
-                            <td style="color:red; font-weight:bold">Not highlighted</td>
-                        {% endif %}
-                    {% endfor %} -->
-                </tr>
-                {% endfor %}
-            </table>
-
-            <form method="post" action="">
-                {% csrf_token %}
-                <table>
-                    {{form.as_table}}
-                </table>
-                <div class="text-left mt-3">
-            </form>
-            <button class = "btn btn-primary btn-block">Submit</button>
-                
-
-        </center>
-    </div>
+{% include 'navbar.html' %}
+<div class="container mt-xl-5">
+    <center>
+        <h2 style="margin-bottom: 5vh">New Product Form</h2>
+        <form action="{% url 'product:create' %}" method="post">
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+                <input class="form-control" id="input-name" name="input-name" placeholder="Product name">
+                <label for="input-name">Name</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input class="form-control" id="input-brand" name="input-brand" placeholder="Product brand">
+                <label for="input-brand">Brand</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input class="form-control" id="input-variant" name="input-variant" placeholder="Product variant">
+                <label for="input-variant">Variant</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input class="form-control" id="input-price" name="input-price" placeholder="Product price">
+                <label for="input-price">Price</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input class="form-control" id="input-stock" name="input-stock" placeholder="Product stock">
+                <label for="input-stock">Stock</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </center>
+</div>
 {% endblock %}

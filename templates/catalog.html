@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}
+<title>Catalog</title>
+{% endblock %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<div class="container mt-xl-5">
+    <center><h1 style="margin-bottom:5vh">Product Catalog</h1></center>
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Product name</th>
+                <th>Product brand</th>
+                <th>Product variant</th>
+                <th>Product price</th>
+                <th>Product stock</th>
+            </tr>
+        </thead>
+
+        <tbody class="table-group-divider">
+        {% for p in products %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ p.name }}</td>
+                <td>{{ p.brand }}</td>
+                <td>{{ p.variant }}</td>
+                <td>{{ p.price }}</td>
+                <td>{{ p.stock }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
