@@ -1,11 +1,12 @@
 {% extends "base.html" %} {% load static %}
 {% block title %}
 <title>Home</title>
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
 
 {% block content %}
 {% include 'navbar.html' %}
-<div style="margin: 5vh 5vw">
+<div style="margin: 5vh 5vw" id="product-section">
   <h4>Products</h4>
   <hr/>
   <div class="row">
