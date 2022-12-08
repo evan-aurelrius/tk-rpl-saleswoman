@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 
 
 from .models import *
-from product.models import *
+from product.views import *
 from .forms import *
 
 def create_highlight(request) :
@@ -31,18 +31,11 @@ def create_highlight(request) :
     return render(request, "cart.html", context)
 
 def show_highlight(request) :
-    highlight_object = Highlight.objects.all().first()
-    context = {
-
-    }
-    if(highlight_object == None) :
-        context["highlight_list"] = []
-    else :
-        res = []
-        for i in highlight_object.highlight_product :
-            object_product = Product.objects.get(pk = int(i))
-            res.append(object_product)
-        context["highlight_list"] = res
-    
+    highlight_objects = list(Highlight.objects.all())
+    res = []
+    for i in highlight_objects :
+        for j in i.highlight_product:
+            res.append(getProductDetails(int(j)))
+    context = {"highlight_list":res}
     return render(request, "show_highlight.html", context)
         

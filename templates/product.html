@@ -13,7 +13,7 @@
                     <th>Product variant:</th>
                     <th>Product price:</th>
                     <th>Product stock:</th>
-                    <th>Sorot Produk:</th>
+                    <th>Status:</th>
                 </tr>
                 
                 {% for p in products %}
@@ -23,14 +23,12 @@
                     <td>{{ p.variant }}</td>
                     <td>{{ p.price }}</td>
                     <td>{{ p.stock }}</td>
-                    <td><button data-product={{product.id}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button></td>
-                    
+                    <td style="color:red; font-weight:bold">Not highlighted</td>
+                    <!-- <td><button data-product={{product.id}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Highlight</button></td> -->
                 </tr>
                 {% endfor %}
             </table>
 
-            
-        
             <form method="post" action="">
                 {% csrf_token %}
                 <table>
@@ -38,7 +36,7 @@
                 </table>
                 <div class="text-left mt-3">
             </form>
-                <button class = "btn btn-primary btn-block">Submit</button>
+            <button class = "btn btn-primary btn-block">Submit</button>
                 
 
         </center>
