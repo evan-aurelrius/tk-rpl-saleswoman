@@ -24,6 +24,9 @@ def createOrder(request):
                 object_client = None
                 product = {}
                 order_price = 0
+                if(len(data) == 1) :
+                    messages.warning(request, f"Please choose the product")
+                    return HttpResponse(status=400)
                 for i in data :
                     try :
                         product_id = int(i)
@@ -35,6 +38,7 @@ def createOrder(request):
                             order_price += quantity*product_price
                             object_product.stock -= quantity
                             object_product.save()
+                            return redirect("order:show-orders")
                         else:
                             messages.warning(request, f"Not enough stock for product {object_product.name}")
                             return redirect("order:create-order")
@@ -45,7 +49,6 @@ def createOrder(request):
                     product_list = product,
                     price = order_price
                 )
-                user.client_list[object_client.id] = object_client.name
                 user.order_list[order.id] = order.id
                 user.save()
                 return redirect("order:create-order")
@@ -62,6 +65,7 @@ def showOrders(request):
     cookies = request.COOKIES.get("user", None)
     if(cookies != None) :
         sales = Sales.objects.filter(pk = int(cookies)).first()
+        print(cookies)
         if(sales != None) :
             order_list = sales.order_list
             client = []
@@ -73,9 +77,7 @@ def showOrders(request):
                 res = []
                 order = Order.objects.get(pk = int(i))
                 temp = []
-                temp.append(order.id)
-                temp.append(order.price)
-                temp.append(order.client.name)
+                temp.append(order)
                 data[order.id] = temp
             context = {
                 "data" : data
@@ -87,32 +89,12 @@ def showOrders(request):
     else :
         return redirect("account:login")
 
-def getOrder(request, id):
-    cookies = request.COOKIES.get("user", None)
-    if(cookies != None) :
-        sales = Sales.objects.filter(pk=int(cookies)).first()
-        if(sales != None) :
-            order_list = sales.order_list
-            data = {
+def getOrderJson(request,id):
+    order = Order.objects.filter(pk=id)
+    response_data = {}
+    response_data['id'] = id
+    response_data['client'] = order[0].client.name
+    response_data['product_list'] = order[0].product_list
+    response_data['price'] = order[0].price
 
-            }
-            for i in order_list :
-                res = []
-                if(i == id) :
-                    order = Order.objects.get(pk = int(i))
-                    for j in order.product_list :
-                        res.append(j)
-                    temp = []
-                    temp.append(res)
-                    temp.append(order.price)
-                    temp.append(order.client.name)
-                    data[order.id] = temp
-                    break
-            context = {
-                "data" : data
-            }
-            return render(request, "show_order_detail.html", context)
-        else :
-            return redirect("account:homepage")
-    else :
-        return redirect("account:login")
+    return HttpResponse(json.dumps(response_data), content_type="application/json")

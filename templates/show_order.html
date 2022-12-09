@@ -1,27 +1,66 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% load static %}
 {% block title %}
-<title>Product</title>
+<title>My Orders</title>
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
-{% block content %}
-    <div class="container mt-xl-5">
-        <center>
 
-            <table class="table table-striped">
-                <tr>
-                    <th>Id Order:</th>
-                    <th>Price:</th>
-                    <th>Client:</th>
-                </tr>
-                
-                {% for id, body in data.items %}
-                <tr>
-                    {% for item in body %}
-                        <td>{{ item }}</td>
-                    {% endfor %}
-                </tr>
+{% block content %}
+{% include 'navbar.html' %} 
+<div style="margin: 5vh 5vw" id="product-section">
+    <h4>Orders</h4>
+    <hr/>
+    <div class="row">
+        {% for id, body in data.items %}
+            <tr>
+                {% for item in body %}
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.id }} - {{ item.client }}</h5>
+                        <p class="card-text">Price: Rp {{ item.price }}</p>
+                        <button id="details-{{ item.id }}" class="btn btn-primary stretched-link btnToView" data-bs-toggle="modal"
+                        data-bs-target="#orderModal">Details</button>
+                    </div>
+                    </div>
+                </div>
                 {% endfor %}
-            </table>
-                  
-        </center>
+            </tr>
+        {% endfor %}
     </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="orderModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <table cellspacing="0" cellpadding="0" class="table">
+            <tr>
+              <td>Client</td>
+              <td id="orderClient"></td>
+            </tr>
+            <tr>
+                <td>Price</td>
+                <td id="orderPrice"></td>
+            </tr>
+            <tr>
+                <td>Product List</td>
+                <td id="p"></td>
+            </tr>
+            <tr>
+                <td id="orderProductList"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</div>
+</div>
+
+{% endblock %}
+{% block script %}
+<script type="text/javascript" src="{% static 'js/order.js' %}"></script>
 {% endblock %}

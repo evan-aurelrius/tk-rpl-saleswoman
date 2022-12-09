@@ -7,5 +7,5 @@ urlpatterns = [
     path('json', product_JSON, name='json'),
     path('create/', createOrder, name='create-order'),
     path('show/', showOrders, name='show-orders'),
-    path('get/<id>', getOrder, name='get-order')
+    path('details/<id>', getOrderJson, name='get-order')
 ]

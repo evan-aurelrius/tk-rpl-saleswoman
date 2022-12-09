@@ -1,33 +1,49 @@
 {% extends "base.html" %}
 {% block title %}
-<title>Order</title>
+<title>Create Order</title>
 {% endblock %}
 {% block content %}
-    <form id="form">
-        {% csrf_token %}
-        <tr>
-            <td>
-                <select>
+<style>
+.box {
+    position: relative  ;
+    width: 50%;
+    height: 50%;
+    background-color: rgb(255, 255, 255);
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 5px;
+}
+
+.submit-button{
+    display: block;
+    margin: auto;
+    width: fit-content;
+    bottom: 0;
+}
+
+</style>
+{% include 'navbar.html' %}
+    <div>
+        <center>
+            <h2 style="margin-bottom: 5vh">New Order Form</h2>
+            <form class="box" id="form" onsubmit="submitForm()">
+                {% csrf_token %}
+                
+                <label for="client-select">Choose a client:</label>
+                <select class="form-control" id="client-select">
                     {% for c in client_list%}
-                    <option> {{c.name}} </option>
-                    <!-- <script language="javascript" type="text/javascript"> 
-                    
-                    for(const item in '{{client_list}}'){
-                        console.log(item.name)
-                        document.write("<option>"+d+"</option>");
-                    }
-                    </script> -->
+                        <option> {{c.name}} </option>
                     {% endfor %}
                 </select>
-            </td>
-        </tr>
-        <table id="product-table">
+                <br>
+                <label for="product-table">Choose product and quantity:</label>
+                <div id="product-table" class="form-floating mb-3">
 
-        </table>
-        
+                </div>
+                <button class="submit-button" type='submit' value="Submit"> SUBMIT </button>
+            </form>
+        </center>
+    </div>
 
-        <button type='submit' onclick="submitForm()"> SUBMIT </button>
-    </form>
     {% for message in messages %}
     {% if message.tags %}
         <script>alert("{{ message }}")</script>
@@ -45,14 +61,12 @@
             html = ""
             product.forEach((item) =>{
                 html += `
-                    <tr>
-                        <td>
-                            <input type="checkbox" id="${item.pk}" name="${item.pk}" onclick="checkOnClick(this.id)"> 
-                                ${item.fields.name}
-                            </input>
-                            <input type="number" id="quantity-${item.pk}" name="quantity-${item.pk}" style="display:none"><br>
-                        </td>
-                    </tr>
+                <div>
+                    <input type="checkbox" id="${item.pk}" name="${item.pk}" onclick="checkOnClick(this.id)"> 
+                    ${item.fields.name}
+                    </input>
+                    <input type="number" id="quantity-${item.pk}" name="quantity-${item.pk}" style="display:none"><br>
+                </div>
                 `
             }) 
             document.getElementById("product-table").innerHTML = html
@@ -82,12 +96,21 @@
                 body:  JSON.stringify(formData),
                 credentials: 'same-origin',
                 headers: { "X-CSRFToken": getCookie("csrftoken") },
-            }).then();
+            }).then(response => {
+    // Check the response status
+    console.log(response.status)
+                if (response.status === 200) {
+                // If the response is successful, reload the page
+                    window.location.reload();
+                } else{
+                    response.headers.set('Content-Type', "")
+                }
+            })
         }
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie !== '') {
-                var cookies = document.cookie.split(';');
+                var cookies = document.cookie.split(';');   
                 for (var i = 0; i < cookies.length; i++) {
                     var cookie = jQuery.trim(cookies[i]);
                     // Does this cookie string begin with the name we want?
