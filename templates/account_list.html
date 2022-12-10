@@ -4,6 +4,8 @@
 {% endblock %}
 
 {% block content %}
+{% include 'navbar.html' %}
+
     <style>
         .gradient-custom {
         /* fallback for old browsers */
@@ -14,6 +16,9 @@
 
         /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
         background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+        
+        height: 100vh;
+        width: 100%;
 
         }
         .block-content {
@@ -22,9 +27,6 @@
             overflow: hidden;
         }
 
-        .gradient-custom{
-            height: 100vh;
-        }
     </style>
 <div class="block-content">
     <div class="gradient-custom">
@@ -33,7 +35,7 @@
         </center>
         <div class="row">
             {% for user in list_user %}
-                <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="col-sm-6 col-md-4 col-lg-3" style="margin-bottom: 30px; margin-right: 10px; margin-left: 40px;">
                     <div class="card bg-dark text-white">
                         <div class="card-body">
                             <h5 class="card-title">Username: {{ user.full_name }}</h5>
@@ -72,7 +74,7 @@
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-outline-light btn-lg px-5 bg-dark text-white" style="margin-top: 20px">
+        <button type="submit" class="btn btn-outline-light btn-lg px-5 bg-dark text-white" style="margin-top: 20px;margin-left: 40px;">
             <a href="{% url 'home:homepage' %}">Home</a>
         </button>
     </div>
