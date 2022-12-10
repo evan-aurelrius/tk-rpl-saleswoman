@@ -6,8 +6,8 @@ from account.user_creation.services.create_account import *
 
 
 def register_admin_account(request) :
-    cookies = request.COOKIES.get("user", None) 
-    if(cookies == None) :
+    session = request.session.get("user", None) 
+    if(session == None) :
         if(request.method == "POST") :
             admin = createAdminAccount(request)
 
@@ -18,13 +18,12 @@ def register_admin_account(request) :
 
 
 def createAccount(request) :
-    cookies = request.COOKIES.get("user", None)
-    if(cookies != None) :
-        user = BaseUser.objects.get(pk = cookies)
-
+    session = request.session.get("user", None)
+    if(session != None) :
+        user = BaseUser.objects.get(pk = session['id'])
         if(user.role == "ADMIN") :
             if(request.method == "POST") :
-                admin = AdminUser.objects.get(pk=cookies)
+                admin = AdminUser.objects.get(pk=session['id'])
                 admin.createAccount(request)
                 return redirect("account:show-account-list")
             return render(request, "create_account.html")
@@ -34,9 +33,9 @@ def createAccount(request) :
     return redirect("account:login")
 
 def showAccountList(request) :
-    cookies = request.COOKIES.get("user", None)
-    if(cookies != None) :
-        user = BaseUser.objects.get(pk = cookies)
+    session = request.session.get("user", None)
+    if(session != None) :
+        user = BaseUser.objects.get(pk = session['id'])
 
         if(user.role == "ADMIN") :
             all_user = BaseUser.objects.all()
@@ -50,9 +49,9 @@ def showAccountList(request) :
     return redirect("account:login")
 
 def getAccount(request, id) :
-    cookies = request.COOKIES.get("user", None)
-    if(cookies != None) :
-        user = BaseUser.objects.get(pk = cookies)
+    session = request.session.get("user", None)
+    if(session != None) :
+        user = BaseUser.objects.get(pk = session['id'])
 
         if(user.role == "ADMIN") :
             selected_user = BaseUser.objects.get(pk=id)
@@ -60,7 +59,6 @@ def getAccount(request, id) :
                 "username" : selected_user.full_name,
                 "email" : selected_user.email,
                 "role": selected_user.role,
-
             }
             return render(request, "account_detail.html", context)
         else :
