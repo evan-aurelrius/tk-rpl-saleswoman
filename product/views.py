@@ -3,6 +3,7 @@ from .models import Product
 from account.models import BaseUser
 from django.http import HttpResponse
 from django.core import serializers
+from django.views.decorators.csrf import csrf_protect
 
 def catalog(request):
     session = request.session.get("user", None)
@@ -30,7 +31,7 @@ def catalogSort(request,field,by):
     qs_json = serializers.serialize('json', products)
     return HttpResponse(qs_json, content_type='application/json')
     
-    
+@csrf_protect    
 def create(request):
     session = request.session.get("user", None)
     if(session == None) :

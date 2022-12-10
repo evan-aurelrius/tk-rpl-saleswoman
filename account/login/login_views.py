@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse
-
-from django.http import HttpResponseRedirect, HttpResponse
+from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 
 from account.models import *
@@ -9,7 +7,7 @@ from account.models import *
 from account.login.services.user_auth import *
 # Create your views here.
 
-
+@csrf_protect
 def login(request) :
     session = request.session.get("user", None)
     if(session != None) :

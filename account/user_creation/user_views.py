@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages
 from django.http import HttpResponse
 from django.core import serializers
-
 from account.models import *
 from account.user_creation.services.create_account import *
+from django.views.decorators.csrf import csrf_protect
 
-
+@csrf_protect
 def register_admin_account(request) :
     session = request.session.get("user", None) 
     if(session == None) :
@@ -18,7 +17,7 @@ def register_admin_account(request) :
     
     return redirect("/")
 
-
+@csrf_protect
 def createAccount(request) :
     session = request.session.get("user", None)
     if(session != None) :

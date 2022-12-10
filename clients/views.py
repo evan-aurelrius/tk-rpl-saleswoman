@@ -1,12 +1,12 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.db import IntegrityError
-
 from account.models import BaseUser, Sales
 from clients.forms import ClientForm
 from clients.models import Client
+from django.views.decorators.csrf import csrf_protect
 
-
+@csrf_protect
 def create_client(request):
     session = request.session.get("user", None)
     user = BaseUser.objects.get(pk = session['id'])
