@@ -1,4 +1,7 @@
 # TK RPL SALESWOMAN - LogistX
+
+https://logistx.up.railway.app/
+
 ## Developers of LogistX:
 | NAME                          | ID (NPM)   |
 | ----------------------------- | ---------- |
