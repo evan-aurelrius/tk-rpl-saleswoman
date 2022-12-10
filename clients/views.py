@@ -2,20 +2,18 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.db import IntegrityError
 
-from account.models import Sales
+from account.models import BaseUser, Sales
 from clients.forms import ClientForm
 from clients.models import Client
 
 
 def create_client(request):
-    sales_id = request.COOKIES.get('user', None)
-    if sales_id is None:
+    session = request.session.get("user", None)
+    user = BaseUser.objects.get(pk = session['id'])
+    if user is None:
         return redirect('account:login')
-
-    try:
-        sales = Sales.objects.get(id=sales_id)
-    except Sales.DoesNotExist:
-        return redirect('account:homepage')
+    
+    sales = Sales.objects.get(id=user.id)
 
     if request.method == 'POST':
         form = ClientForm(request.POST)
@@ -35,14 +33,15 @@ def create_client(request):
 
 
 def index(request):
-    sales_id = request.COOKIES.get('user', None)
-    if sales_id is None:
+    session = request.session.get("user", None)
+    user = BaseUser.objects.get(pk = session['id'])
+    if user is None:
         return redirect('account:login')
 
     try:
-        sales = Sales.objects.get(id=sales_id)
+        sales = Sales.objects.get(id=user.id)
     except Sales.DoesNotExist:
-        return redirect('account:homepage')
+        return redirect('/')
 
     form = ClientForm()
     create_code = -1
@@ -61,12 +60,14 @@ def index(request):
 
 
 def get_details(request):
-    sales_id = request.COOKIES.get('user', None)
-    if sales_id is None:
+    session = request.session.get("user", None)
+    user = BaseUser.objects.get(pk = session['id'])
+    
+    if user is None:
         return JsonResponse({'error': f'Please login first'}, status=401)
 
     try:
-        sales = Sales.objects.get(id=sales_id)
+        sales = Sales.objects.get(id=user.id)
     except Sales.DoesNotExist:
         return JsonResponse({'error': f'Please login as Sales'}, status=403)
 

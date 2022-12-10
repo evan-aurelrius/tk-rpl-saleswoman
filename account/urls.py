@@ -10,7 +10,6 @@ urlpatterns = [
     path("login/", login, name="login"),
     path("logout/", logout, name="logout"),
     path("create-account/", createAccount, name="create-account"),
-    path("home/", homepage, name="homepage"),
     path("show-account-list/", showAccountList, name="show-account-list" ),
     path("show-account-detail/<id>", getAccount, name="show-account-detail" ),
 

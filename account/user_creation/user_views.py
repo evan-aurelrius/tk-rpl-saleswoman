@@ -14,7 +14,7 @@ def register_admin_account(request) :
             return redirect("account:login")
         return render(request, "register.html")
     
-    return redirect("account:homepage")
+    return redirect("/")
 
 
 def createAccount(request) :
@@ -28,7 +28,7 @@ def createAccount(request) :
                 return redirect("account:show-account-list")
             return render(request, "create_account.html")
         else :
-            return redirect("account:homepage")
+            return redirect("/")
 
     return redirect("account:login")
 
@@ -44,7 +44,7 @@ def showAccountList(request) :
             }
             return render(request, "account_list.html", context)
         else :
-            return redirect("account:homepage")
+            return redirect("/")
 
     return redirect("account:login")
 
@@ -62,7 +62,7 @@ def getAccount(request, id) :
             }
             return render(request, "account_detail.html", context)
         else :
-            return redirect("account:homepage")
+            return redirect("/")
 
     return redirect("account:login")
  

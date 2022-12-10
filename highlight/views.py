@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render
 
 
 from .models import *
@@ -6,6 +6,12 @@ from product.views import *
 from .forms import *
 
 def create_highlight(request) :
+    session = request.session.get("user", None)
+    if(session == None) :
+        return redirect("account:login")
+    
+    user = BaseUser.objects.get(pk = session['id'])
+    
     form = HighlightForm()
 
     if (request.method == "POST") :
@@ -16,26 +22,30 @@ def create_highlight(request) :
             if(highlight == None) :
                 Highlight.objects.create()
                 highlight = Highlight.objects.all().first()
-            # if(len(highlight) == 0) :
-            #     create_highlight = Highlight.object.create()
-            #     highlight = Highlight.objects.all()
             if(highlight.highlight_product.get(selected_product) == None) :
                 object_product = Product.objects.get(pk = int(selected_product))
                 highlight.highlight_product[selected_product] = object_product.name
                 highlight.save()
     
     context = {
-        "form" : form
+        "form" : form,
+        "role" : user.role
     }
 
     return render(request, "create_highlight.html", context)
 
 def show_highlight(request) :
+    session = request.session.get("user", None)
+    if(session == None) :
+        return redirect("account:login")
+    
+    user = BaseUser.objects.get(pk = session['id'])
+    
     highlight_objects = list(Highlight.objects.all())
     res = []
     for i in highlight_objects :
         for j in i.highlight_product:
             res.append(getProductDetails(int(j)))
-    context = {"highlight_list":res}
+    context = {"highlight_list":res,"role":user.role}
     return render(request, "show_highlight.html", context)
         

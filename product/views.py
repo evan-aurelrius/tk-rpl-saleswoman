@@ -5,11 +5,11 @@ from django.http import HttpResponse
 from django.core import serializers
 
 def catalog(request):
-    user_id = request.COOKIES.get('user', None)
-    if user_id is None:
-        return redirect('account:login')
+    session = request.session.get("user", None)
+    if(session == None) :
+        return redirect("account:login")
     
-    user = BaseUser.objects.get(pk = user_id)
+    user = BaseUser.objects.get(pk = session['id'])
     products = Product.objects.all().order_by('name').values()
     for p in products:
         p['price'] = 'Rp'+format(p['price'],',d').replace(",",".")
@@ -32,13 +32,16 @@ def catalogSort(request,field,by):
     
     
 def create(request):
-    user_id = request.COOKIES.get('user', None)
+    session = request.session.get("user", None)
+    if(session == None) :
+        return redirect("account:login")
+    user_id = session['id']
     if user_id is None:
         return redirect('account:login')
     try:
         user = BaseUser.objects.get(id=user_id)
         if user.role != 'LOGISTIC OPERATOR' and user.role != 'OPERATOR LOGISTIK':
-            return redirect('home:index')
+            return redirect('home:homepage')
     except BaseUser.DoesNotExist:
         return redirect('account:login')
     
@@ -56,7 +59,7 @@ def create(request):
             price=pprice,
             stock=pstock
         )
-        return redirect('home:index')
+        return redirect('home:homepage')
         
     return render(request, 'product.html')
 

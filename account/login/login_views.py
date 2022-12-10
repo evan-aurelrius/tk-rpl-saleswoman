@@ -13,7 +13,7 @@ from account.login.services.user_auth import *
 def login(request) :
     session = request.session.get("user", None)
     if(session != None) :
-        return redirect("account:homepage")
+        return redirect("/")
     else :
         if(request.method == "POST") :
             full_name = request.POST.get("full-name")
@@ -32,7 +32,7 @@ def login(request) :
                 }
                 request.session['user'] = user_data
 
-                return redirect('account:homepage')
+                return redirect('/')
         return render(request, "login.html")
 
 

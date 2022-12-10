@@ -14,10 +14,10 @@ def product_JSON(request):
     return HttpResponse(serializers.serialize("json", product), content_type="application/json")
 
 def createOrder(request):
-    cookies = request.COOKIES.get("user", None)
-    client = Client.objects.all()
-    if(cookies != None) :
-        user = Sales.objects.filter(pk = int(cookies)).first()
+    session = request.session.get("user", None)
+    
+    if(session != None) :
+        user = Sales.objects.filter(pk = session['id']).first()
         if(user != None) :
             if request.method == "POST":
                 data = json.loads(request.body)
@@ -52,20 +52,22 @@ def createOrder(request):
                 user.order_list[order.id] = order.id
                 user.save()
                 return redirect("order:create-order")
+            client = Client.objects.all().filter(sales_id=session['id'])
             context = {
-                "client_list" : client
+                "client_list" : client,
+                "role" : user.role
             }
             return render(request, "order.html", context)
         else :
-            return redirect("account:homepage")
+            return redirect("/")
     else :
         return redirect("account:login")
 
 def showOrders(request):
-    cookies = request.COOKIES.get("user", None)
-    if(cookies != None) :
-        sales = Sales.objects.filter(pk = int(cookies)).first()
-        print(cookies)
+    session = request.session.get("user", None)
+    
+    if(session != None) :
+        sales = Sales.objects.filter(pk = session['id']).first()
         if(sales != None) :
             order_list = sales.order_list
             client = []
@@ -80,11 +82,12 @@ def showOrders(request):
                 temp.append(order)
                 data[order.id] = temp
             context = {
-                "data" : data
+                "data" : data,
+                "role" : session['role']
             }
             return render(request, "show_order.html", context)
         else :
-            return redirect("account:homepage")
+            return redirect("/")
 
     else :
         return redirect("account:login")
