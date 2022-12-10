@@ -1,42 +1,90 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% load static %}
 {% block title %}
-<title>Product</title>
+<title>Account List</title>
 {% endblock %}
 
 {% block content %}
     <style>
-            .gradient-custom {
-/* fallback for old browsers */
-    background: #6a11cb;
+        .gradient-custom {
+        /* fallback for old browsers */
+        background: #6a11cb;
 
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+        /* Chrome 10-25, Safari 5.1-6 */
+        background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
 
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
 
-    }
+        }
+        .block-content {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .gradient-custom{
+            height: 100vh;
+        }
     </style>
-    <body class="gradient-custom ">
-        <div class="container mt-xl-5">
-        <table class="table table-striped bg-white">
-            <tr>
-                <th>Username:</th>
-                <th>Email:</th>
-                <th>Role:</th>
-            </tr>
-            
-            {% for p in list_user %}
-            <tr>
-                <td>{{ p.full_name }}</td>
-                <td>{{ p.email }}</td>
-                <td>{{ p.role }}</td>
-            </tr>
+<div class="block-content">
+    <div class="gradient-custom">
+        <center>
+            <h4>Account List</h4>
+        </center>
+        <div class="row">
+            {% for user in list_user %}
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card bg-dark text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Username: {{ user.full_name }}</h5>
+                            <p class="card-text"> Role: {{ user.role }}</p>
+                            <button id="{{ user.id }}" class="btn btn-primary stretched-link btnToView" data-bs-toggle="modal"
+                            data-bs-target="#accountModal">Details</button>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
-        </table>
-        <button type="submit" >
-            <a href="{% url 'account:homepage' %}">Home</a>
-            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="accountModal" tabindex="-1" aria-labelledby="accountModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="accountModalLabel">User Detail</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table cellspacing="0" cellpadding="0" class="table">
+                                <tr>
+                                    <td>Username</td>
+                                    <td id="username"></td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td id="email"></td>
+                                </tr>
+                                <tr>
+                                    <td>Role</td>
+                                    <td id="role"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </body>
+        <button type="submit" class="btn btn-outline-light btn-lg px-5 bg-dark text-white" style="margin-top: 20px">
+            <a href="{% url 'account:homepage' %}">Home</a>
+        </button>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="{% static 'js/account_detail.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
 {% endblock %}
