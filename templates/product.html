@@ -5,28 +5,33 @@
 {% block content %}
 {% include 'navbar.html' %}
 <div class="container mt-xl-5">
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{error}}
+    </div>
+    {% endif %}
     <center>
         <h2 style="margin-bottom: 5vh">New Product Form</h2>
         <form action="{% url 'product:create' %}" method="post">
             {% csrf_token %}
             <div class="form-floating mb-3">
-                <input class="form-control" id="input-name" name="input-name" placeholder="Product name">
+                <input maxlength="50" required class="form-control" id="input-name" name="input-name" placeholder="Product name">
                 <label for="input-name">Name</label>
             </div>
             <div class="form-floating mb-3">
-                <input class="form-control" id="input-brand" name="input-brand" placeholder="Product brand">
+                <input maxlength="30" required class="form-control" id="input-brand" name="input-brand" placeholder="Product brand">
                 <label for="input-brand">Brand</label>
             </div>
             <div class="form-floating mb-3">
-                <input class="form-control" id="input-variant" name="input-variant" placeholder="Product variant">
+                <input maxlength="50" required class="form-control" id="input-variant" name="input-variant" placeholder="Product variant">
                 <label for="input-variant">Variant</label>
             </div>
             <div class="form-floating mb-3">
-                <input class="form-control" id="input-price" name="input-price" placeholder="Product price">
+                <input required class="form-control" id="input-price" name="input-price" placeholder="Product price">
                 <label for="input-price">Price</label>
             </div>
             <div class="form-floating mb-3">
-                <input class="form-control" id="input-stock" name="input-stock" placeholder="Product stock">
+                <input required class="form-control" id="input-stock" name="input-stock" placeholder="Product stock">
                 <label for="input-stock">Stock</label>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>

@@ -51,14 +51,17 @@ def create(request):
         pvariant=request.POST.get('input-variant',None)
         pprice=request.POST.get('input-price',None)
         pstock=request.POST.get('input-stock',None)
-        
-        newProduct = Product.objects.create(
-            name=pname,
-            brand=pbrand,
-            variant=pvariant,
-            price=pprice,
-            stock=pstock
-        )
+        try:
+            newProduct = Product.objects.create(
+                name=pname,
+                brand=pbrand,
+                variant=pvariant,
+                price=pprice,
+                stock=pstock
+            )
+        except:
+            request.method = 'GET'
+            return render (request, 'product.html', {'error':'Something went wrong! Please input a valid data.'})
         return redirect('home:homepage')
         
     return render(request, 'product.html')
