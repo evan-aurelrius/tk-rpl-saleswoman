@@ -11,8 +11,8 @@ from account.login.services.user_auth import *
 
 
 def login(request) :
-    cookies = request.COOKIES.get("user", None)
-    if(cookies != None) :
+    session = request.session.get("user", None)
+    if(session != None) :
         return redirect("account:homepage")
     else :
         if(request.method == "POST") :
@@ -25,31 +25,31 @@ def login(request) :
                 messages.info(request, 'Wrong username or password')
             
             else :
-                response = HttpResponseRedirect(reverse("account:homepage"))
-                response.set_cookie("user", user.id)
+                user_data = {
+                    "id" : user.id,
+                    "username": user.full_name,
+                    "role" : user.role     
+                }
+                request.session['user'] = user_data
 
-                return response
+                return redirect('account:homepage')
         return render(request, "login.html")
 
 
 def logout(request) :
-    user = request.COOKIES.get("user", None)
-    if(user != None) :
-        response = HttpResponseRedirect(reverse("account:login"))
-        response.delete_cookie("user")
-        return response
+
+    session = request.session.get("user", None)
+    if(session != None) :
+        request.session.flush()
+        request.session.save()
+        return redirect("account:login")
     else :
         return redirect("account:login")
 
 
 def homepage(request) :
-    cookies = request.COOKIES.get("user", None)
-    if (cookies != None) :
-        user = BaseUser.objects.get(pk = cookies)
-        context = {
-            "username" :  user.full_name,
-            "role" : user.role
-        }
-        return render(request, "homepage.html", context)
+    session = request.session.get("user", None)
+    if (session != None) :
+        return render(request, "homepage.html")
     else :
         return redirect("account:login")

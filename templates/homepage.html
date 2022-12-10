@@ -5,10 +5,11 @@
 {% endblock %}
 
 {% block content %}
+
  <h1>
-    Hello {{username}}, role kamu adalah {{role}}
+    Hello {{request.session.user.username}}, role kamu adalah {{role}}
  </h1>
- {% if role == "ADMIN" %}
+ {% if request.session.user.role == "ADMIN" %}
  <button type="submit" >
     <a href="{% url 'account:create-account' %}">Create Account</a>
  </button>
