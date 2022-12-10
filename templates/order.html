@@ -25,7 +25,7 @@
     <div>
         <center>
             <h2 style="margin-bottom: 5vh">New Order Form</h2>
-            <form class="box" id="form" onsubmit="submitForm()">
+            <form class="box" id="form" method="POST">
                 {% csrf_token %}
                 
                 <label for="client-select">Choose a client:</label>
@@ -51,6 +51,46 @@
     {% endfor %}        
     <script>
         window.onload = showProduct()
+
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', event => {
+        // Prevent the default form submission behavior
+        event.preventDefault();
+            var formData = {}
+            var counter = 0;
+            for (var i = 1; i < form.elements.length - 1; i++){
+                var e = form.elements[i];
+                if(e.type == "select-one"){
+                    formData["client"] = e.value
+                }
+                if(e.type == "checkbox"){   
+                    if(e.checked == true){
+                        formData[e.name] = 0;
+                    }
+                }
+                if(e.type == "number"){
+                    if(formData[e.name[e.name.length - 1]] != null){
+                        formData[e.name[e.name.length - 1]] = e.value
+                    }
+                }
+            }
+            fetch("{% url 'order:create-order' %}", {
+                method: "POST",
+                body:  JSON.stringify(formData),
+                credentials: 'same-origin',
+                headers: { "X-CSRFToken": getCookie("csrftoken") },
+            }).then(response => {
+                // Check the response status
+                if (response.redirected && response.status == 200) {
+                    console.log("REDIRECT")
+                    alert("Order has been created successfully")
+                    window.location = response.url
+                } else {
+                    alert("Not Enough Stock")
+                }
+            })
+        })
         async function getProduct(){
             var data = await fetch("{% url 'order:json' %}").then((res) => res.json());
             return data
@@ -72,40 +112,7 @@
             document.getElementById("product-table").innerHTML = html
         }
         async function submitForm(){
-            const form = document.forms.form
-            var formData = {}
-            var counter = 0;
-            for (var i = 1; i < form.elements.length - 1; i++){
-                var e = form.elements[i];
-                if(e.type == "select-one"){
-                    formData["client"] = e.value
-                }
-                if(e.type == "checkbox"){   
-                    if(e.checked == true){
-                        formData[e.name] = 0;
-                    }
-                }
-                if(e.type == "number"){
-                    if(formData[e.name[e.name.length - 1]] != null){
-                        formData[e.name[e.name.length - 1]] = e.value
-                    }
-                }
-            }
-            await fetch("{% url 'order:create-order' %}", {
-                method: "POST",
-                body:  JSON.stringify(formData),
-                credentials: 'same-origin',
-                headers: { "X-CSRFToken": getCookie("csrftoken") },
-            }).then(response => {
-    // Check the response status
-    console.log(response.status)
-                if (response.status === 200) {
-                // If the response is successful, reload the page
-                    window.location.reload();
-                } else{
-                    response.headers.set('Content-Type', "")
-                }
-            })
+
         }
         function getCookie(name) {
             var cookieValue = null;

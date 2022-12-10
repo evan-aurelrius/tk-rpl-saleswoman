@@ -18,6 +18,9 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ item.id }} - {{ item.client }}</h5>
                         <p class="card-text">Price: Rp {{ item.price }}</p>
+                        <!-- <script> 
+                            addDots($("#price").text())    
+                        </script> -->
                         <button id="details-{{ item.id }}" class="btn btn-primary stretched-link btnToView" data-bs-toggle="modal"
                         data-bs-target="#orderModal">Details</button>
                     </div>
@@ -62,5 +65,20 @@
 
 {% endblock %}
 {% block script %}
+<!-- <script>
+function addDots(nStr) {
+        nStr = nStr.substring(9, nStr.length)
+        nStr += '';
+        x = nStr.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + '.' + '$2'); // changed comma to dot here
+        }
+        $("#price").text("Price: Rp" + (x1+x2));
+        console.log(x1+x2)
+    }
+</script> -->
 <script type="text/javascript" src="{% static 'js/order.js' %}"></script>
 {% endblock %}
