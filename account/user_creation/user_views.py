@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.http import HttpResponse
+from django.core import serializers
 
 from account.models import *
 from account.user_creation.services.create_account import *
@@ -55,12 +57,8 @@ def getAccount(request, id) :
 
         if(user.role == "ADMIN") :
             selected_user = BaseUser.objects.get(pk=id)
-            context = {
-                "username" : selected_user.full_name,
-                "email" : selected_user.email,
-                "role": selected_user.role,
-            }
-            return render(request, "account_detail.html", context)
+            return HttpResponse(serializers.serialize("json", [selected_user]), content_type="application/json")
+
         else :
             return redirect("/")
 
