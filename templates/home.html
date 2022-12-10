@@ -6,12 +6,17 @@
 
 {% block content %}
 {% include 'navbar.html' %}
+{% if success %}
+<div class="alert alert-success" role="alert">
+    {{success}}
+</div>
+{% endif %}
 <div style="margin: 5vh 5vw" id="product-section">
   <h4>Products</h4>
   <hr/>
   <div class="row">
     {% for product in products %}
-    <div class="col-sm-6 col-md-4 col-lg-3">
+    <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">{{ product.name }} - {{ product.variant }}</h5>

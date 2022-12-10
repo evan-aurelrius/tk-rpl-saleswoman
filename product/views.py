@@ -62,6 +62,7 @@ def create(request):
         except:
             request.method = 'GET'
             return render (request, 'product.html', {'error':'Something went wrong! Please input a valid data.'})
+        request.session['success'] = "Product '"+pname+"' has been added successfully!"
         return redirect('home:homepage')
         
     return render(request, 'product.html')
