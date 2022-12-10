@@ -26,7 +26,14 @@ def createAccount(request) :
         if(user.role == "ADMIN") :
             if(request.method == "POST") :
                 admin = AdminUser.objects.get(pk=session['id'])
-                admin.createAccount(request)
+
+                full_name = request.POST.get("full-name")
+                try :
+                    check_existing_account = BaseUser.objects.get(full_name = full_name)
+                    messages.info(request, f"Account with username {full_name} already exist")
+                    return redirect("account:create-account")
+                except :
+                    admin.createAccount(request)
                 return redirect("account:show-account-list")
             return render(request, "create_account.html")
         else :

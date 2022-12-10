@@ -31,7 +31,6 @@ def login(request) :
                     "role" : user.role     
                 }
                 request.session['user'] = user_data
-
                 return redirect('/')
         return render(request, "login.html")
 

@@ -102,8 +102,16 @@
       </div>
     </div>
     </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            {% if message.tags %}
+                <script>alert("{{ message }}")</script>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    {% endif %}
 </div>
-
 <script>
     $('#password, #confirm_password').on('keyup', function () {
     if ($('#password').val().length < 8) {
