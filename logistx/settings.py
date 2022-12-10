@@ -29,7 +29,7 @@ SECRET_KEY = "django-insecure-+v1^wh!5237&2oibg3rp%0ocxs7y--8i7_=3xg$v=&s^p2l3nu
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
+CSRF_TRUSTED_ORIGINS = ['https://logistx.up.railway.app']
 
 # Application definition
 
