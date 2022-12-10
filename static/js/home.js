@@ -2,7 +2,7 @@ $(".btnToView").click(function() {
     var btn = $(this);
     var str = btn.attr('id');
     id = str.slice(8);
-    
+    console.log("Hit");
     $.ajax({
         url: '/product/details/'+id,
         dataType: 'json',
