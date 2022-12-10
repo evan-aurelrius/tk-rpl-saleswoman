@@ -9,18 +9,26 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
+          {% if request.session.user.role == "ADMIN" %}
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'account:create-account' %}">Create Account</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'account:show-account-list' %}">Show Account List</a>
+          </li>
+          {% endif %}
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'product:catalog' %}">Catalog</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'highlight:show-highlight' %}">Highlight</a>
           </li>
-          {% if role == "LOGISTIC OPERATOR" or role == "OPERATOR LOGISTIK" %}
+          {% if request.session.user.role == "LOGISTIC OPERATOR" or request.session.user.role == "OPERATOR LOGISTIK" %}
           <li class="nav-item">
             <a class="nav-link active" href="{% url 'product:create' %}">Add Product</a>
           </li>
           {% endif %}
-          {% if role == 'SALES' %}
+          {% if request.session.user.role == 'SALES' %}
           <li class="nav-item">
             <a class="nav-link active" href="/clients">My Clients</a>
           </li>
