@@ -49,8 +49,8 @@
     </style>
 <div class="block-content">
     <div class="gradient-custom">
-    <div class="container py-5 h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center">
         <div class="col-12 col-md-8 col-lg-6 col-xl-5">
           <div class="card bg-dark text-white" style="border-radius: 1rem;">
             <div class="card-body p-5 text-center">
@@ -89,7 +89,7 @@
                       <label class="form-label" for="role">Role</label>
                     </div>
         
-                    <button class="btn btn-outline-light btn-lg px-5" type="submit">Create</button>
+                    <button id="enter" class="btn btn-outline-light btn-lg px-5" type="submit">Create</button>
                 </form>
                 <div>
                   <p class="mb-0">Want back to home? <a href="/" class="text-white-50 fw-bold">Home</a>
@@ -108,22 +108,24 @@
     $('#password, #confirm_password').on('keyup', function () {
     if ($('#password').val().length < 8) {
       $('#message').html('The password must have a minimum length of 8 characters').css('color', 'red');
+      $("#enter").prop('disabled',true)//use prop()
     }
     else if(!/[a-z]/.test($('#password').val())){
       $('#message').html('The password must have at least 1 lowercase character').css('color', 'red');
+      $("#enter").prop('disabled',true)//use prop()
     }
     else if(!/[A-Z]/.test($('#password').val())){
       $('#message').html('The password must have at least 1 uppercase character').css('color', 'red');
+      $("#enter").prop('disabled',true)//use prop()
     }
     else if (!($('#password').val() == $('#confirm_password').val())) {
       $('#message').html('Password Not Match').css('color', 'red');
+      $("#enter").prop('disabled',true)//use prop()
     } 
     else{
       $('#message').html('Password Match').css('color', 'green');
+      $("#enter").prop('disabled',false)//use prop()
     }
-  });
-  $('#password').on('keyup', function () {
-  
   });
 </script>
 {% endblock %}
