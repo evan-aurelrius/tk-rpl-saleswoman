@@ -12,6 +12,9 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'product:catalog' %}">Catalog</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'highlight:show-highlight' %}">Highlight</a>
+          </li>
           {% if role == "LOGISTIC OPERATOR" or role == "OPERATOR LOGISTIK" %}
           <li class="nav-item">
             <a class="nav-link active" href="{% url 'product:create' %}">Add Product</a>

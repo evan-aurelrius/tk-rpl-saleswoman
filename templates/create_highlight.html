@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block title %}
-<title>Product</title>
+<title>Highlight Product</title>
 {% endblock %}
 {% block content %}
+{% include 'navbar.html' %}
     <div class="container mt-xl-5">
         <center>
         
@@ -14,6 +15,9 @@
                 <div class="text-left mt-3">
             </form>
                 <button class = "btn btn-primary btn-block">Submit</button>
+            <button type="submit" >
+                <a href="{% url 'highlight:create-highlight' %}">Create Highlight</a>
+            </button>
                 
         </center>
     </div>

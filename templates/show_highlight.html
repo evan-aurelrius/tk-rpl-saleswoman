@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block title %}
-<title>Product</title>
+<title>Highlight Product</title>
 {% endblock %}
 {% block content %}
+{% include 'navbar.html' %}
     <div class="container mt-xl-5">
-        <center>
-
+        <center> <h1 style="margin-bottom:5vh">Product Highlight</h1></center>
             <table class="table table-striped">
                 <tr>
                     <th>Product name:</th>
@@ -14,19 +14,21 @@
                     <th>Product price:</th>
                     <th>Product stock:</th>
                 </tr>
-                
-                {% for p in highlight_list %}
-                <tr>
-                    <td>{{ p.name }}</td>
-                    <td>{{ p.brand }}</td>
-                    <td>{{ p.variant }}</td>
-                    <td>{{ p.price }}</td>
-                    <td>{{ p.stock }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-                
 
-        </center>
+                <tbody class="table-group-divider"></tbody>
+                {% for p in highlight_list %}
+                    <tr>
+                        <td>{{ p.name }}</td>
+                        <td>{{ p.brand }}</td>
+                        <td>{{ p.variant }}</td>
+                        <td>{{ p.price }}</td>
+                        <td>{{ p.stock }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit" >
+                <a href="{% url 'highlight:create-highlight' %}">Create Highlight</a>
+            </button>
     </div>
 {% endblock %}

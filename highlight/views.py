@@ -28,7 +28,7 @@ def create_highlight(request) :
         "form" : form
     }
 
-    return render(request, "cart.html", context)
+    return render(request, "create_highlight.html", context)
 
 def show_highlight(request) :
     highlight_objects = list(Highlight.objects.all())
