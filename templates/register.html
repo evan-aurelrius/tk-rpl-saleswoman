@@ -76,7 +76,7 @@
                       <span id='message' for="confirm"></span>
                     </div>
         
-                    <button class="btn btn-outline-light btn-lg px-5" type="submit">Sign Up</button>
+                    <button id="enter" class="btn btn-outline-light btn-lg px-5" type="submit">Sign Up</button>
                 </form>
                 <div>
                   <p class="mb-0 question">Already have an account? <a href="{% url 'account:login' %}" class="text-white-50 fw-bold">Login</a>
@@ -92,22 +92,27 @@
 </div>
 
 <script>
-  $('#password, #confirm_password').on('keyup', function () {
-  if ($('#password').val().length < 8) {
-    $('#message').html('The password must have a minimum length of 8 characters').css('color', 'red');
-  }
-  else if(!/[a-z]/.test($('#password').val())){
-    $('#message').html('The password must have at least 1 lowercase character').css('color', 'red');
-  }
-  else if(!/[A-Z]/.test($('#password').val())){
-    $('#message').html('The password must have at least 1 uppercase character').css('color', 'red');
-  }
-  else if (!($('#password').val() == $('#confirm_password').val())) {
-    $('#message').html('Password Not Match').css('color', 'red');
-  } 
-  else{
-    $('#message').html('Password Match').css('color', 'green');
-  }
+    $('#password, #confirm_password').on('keyup', function () {
+    if ($('#password').val().length < 8) {
+      $('#message').html('The password must have a minimum length of 8 characters').css('color', 'red');
+      $("#enter").prop('disabled',true)//use prop()
+    }
+    else if(!/[a-z]/.test($('#password').val())){
+      $('#message').html('The password must have at least 1 lowercase character').css('color', 'red');
+      $("#enter").prop('disabled',true)//use prop()
+    }
+    else if(!/[A-Z]/.test($('#password').val())){
+      $('#message').html('The password must have at least 1 uppercase character').css('color', 'red');
+      $("#enter").prop('disabled',true)//use prop()
+    }
+    else if (!($('#password').val() == $('#confirm_password').val())) {
+      $('#message').html('Password Not Match').css('color', 'red');
+      $("#enter").prop('disabled',true)//use prop()
+    } 
+    else{
+      $('#message').html('Password Match').css('color', 'green');
+      $("#enter").prop('disabled',false)//use prop()
+    }
 });
 $('#password').on('keyup', function () {
 
